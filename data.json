@@ -1,0 +1,15 @@
+[
+  {
+    "model": "catalog.product",
+
+    "fields": {
+      "name": "Smartphone",
+      "description": "Smartphone",
+      "preview": "",
+      "category": "Smartphone",
+      "price": 30000,
+      "date_create": "2023-05-13T10:53:20Z",
+      "date_change": "2023-05-13T10:53:21Z"
+    }
+  }
+]
