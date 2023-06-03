@@ -1,0 +1,38 @@
+[
+    {
+    "model": "blog.post",
+    "fields": {
+      "name": "statia",
+      "slug": "statia",
+      "content": "111",
+      "image": "",
+      "created_at": "2023-05-31T13:24:44.158Z",
+      "published": true,
+      "view_count": 0
+    }
+  },
+  {
+    "model": "blog.post",
+    "fields": {
+      "name": "statia_2",
+      "slug": "statia_2",
+      "content": "222",
+      "image": "",
+      "created_at": "2023-06-01T09:41:21.386Z",
+      "published": true,
+      "view_count": 0
+    }
+  },
+  {
+    "model": "blog.post",
+    "fields": {
+      "name": "statia_3",
+      "slug": "statia_3",
+      "content": "---",
+      "image": "",
+      "created_at": "2023-06-01T09:41:48.587Z",
+      "published": true,
+      "view_count": 0
+    }
+  }
+]

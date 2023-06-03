@@ -1,0 +1,8 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+    <div class="col-12">
+    <a href="{% url 'main:product_create' %}" class="btn btn-primary m-2">Создать товар</a>
+    </div>
+    {% include 'catalog/includes/inc_product_card.html' %}
+{% endblock %}
