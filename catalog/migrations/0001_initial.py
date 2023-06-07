@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=150, verbose_name='наименование')),
                 ('description', models.TextField(verbose_name='описание')),
-                ('preview', models.ImageField(blank=True, null=True, upload_to='products/', verbose_name='фото')),
+                ('preview', models.ImageField(blank=True, null=True, upload_to='images/', verbose_name='фото')),
                 ('category', models.CharField(max_length=150, verbose_name='категория')),
                 ('price', models.IntegerField(verbose_name='цена')),
                 ('date_create', models.DateTimeField(verbose_name='дата создания')),

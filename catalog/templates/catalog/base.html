@@ -1,0 +1,25 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title }}</title>
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+</head>
+<body>
+{% include 'catalog/includes/inc_main_menu.html' %}
+
+<main role="main">
+    <!-- Three columns of text below the carousel -->
+    <h1>{{ title }}</h1>
+    <div class="row">
+        {% block content %}
+        {% endblock %}
+
+    </div><!-- /.col-lg-4 -->
+</main>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>

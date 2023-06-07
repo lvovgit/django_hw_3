@@ -1,12 +1,18 @@
 from django.db import models
+from django.views import generic
+# from catalog.models import Product
+
 
 # Create your models here.
 NULLABLE = {'blank': True, 'null': True}
 
+# class ProductListView(generic.ListView):
+#     model = Product
+
 class Product(models.Model):
     name = models.CharField(max_length=150, verbose_name='наименование')
     description = models.TextField(verbose_name='описание')
-    preview = models.ImageField(upload_to='products/', verbose_name='фото', **NULLABLE)
+    preview = models.ImageField(upload_to='media', verbose_name='фото', **NULLABLE)
     category = models.CharField(max_length=150, verbose_name='категория')
     price = models.IntegerField(verbose_name='цена')
     date_create = models.DateTimeField(verbose_name='дата создания')
@@ -18,6 +24,7 @@ class Product(models.Model):
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
         ordering = ('name',)
+
 class Category(models.Model):
     name = models.CharField(max_length=150, verbose_name='наименование')
     description = models.TextField(verbose_name='описание')
