@@ -1,5 +1,4 @@
 from django.db import models
-from django.views import generic
 
 # from catalog.models import Product
 
@@ -45,12 +44,12 @@ class Category(models.Model):
 class Version(models.Model):
     name_of_product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='наименование')
     number_of_version = models.CharField(max_length=150, verbose_name='номер версии')
-    name_of_version = models.TextField(verbose_name='имя версии')
+    title_of_version = models.CharField(max_length=150, verbose_name='имя версии')
     actual_version = models.BooleanField(verbose_name='актуальность версии', default=True)
 
     def __str__(self):
-        return f'{self.name_of_product}'
+        return f'{self.title_of_version} ({self.name_of_product})'
+
     class Meta:
         verbose_name = 'версия'
         verbose_name_plural = 'версии'
-
