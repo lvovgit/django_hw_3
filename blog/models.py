@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -7,7 +8,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 class Post(models.Model):
     name = models.CharField(max_length=150, verbose_name='заголовок')
-    slug = models.CharField(max_length=150, verbose_name='URL')
+    slug = models.SlugField(null=True, blank=True)
     content = models.TextField(verbose_name='содержимое')
     image = models.ImageField(upload_to='images/', verbose_name='изображение', **NULLABLE)
     created_at = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
@@ -16,6 +17,9 @@ class Post(models.Model):
 
     def __str__(self):
         return f'{self.name} {self.slug}'
+
+    # def get_absolute_url(self):
+    #     return reverse('posts', kwargs={'post_slug': self.object.slug})
 
     class Meta:
         verbose_name = 'Пост'
