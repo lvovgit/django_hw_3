@@ -29,7 +29,7 @@ class PostDetailView(DetailView):
 
 class PostCreateView(CreateView):
     model = Post
-    fields = ('name', 'slug', 'content', 'image', 'published')
+    fields = ('name', 'content', 'image', 'published')
     success_url = reverse_lazy('blog:post_list', )
 
 
