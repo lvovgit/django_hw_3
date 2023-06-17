@@ -10,7 +10,7 @@ NULLABLE = {'blank': True, 'null': True}
 
 class Post(models.Model):
     name = models.CharField(max_length=150, verbose_name='заголовок')
-    slug = models.SlugField(max_length=150, unique=True, db_index=True, verbose_name='URL',)
+    slug = models.SlugField(max_length=150, db_index=True, verbose_name='URL',)
     content = models.TextField(verbose_name='содержимое')
     image = models.ImageField(upload_to='images/', verbose_name='изображение', **NULLABLE)
     created_at = models.DateTimeField(verbose_name='дата создания', auto_now_add=True)
