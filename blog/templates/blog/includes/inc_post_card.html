@@ -3,6 +3,7 @@
 <div class="col-3">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
+
                         <h4 class="my-2 font-weight-normal">{{object.name}}</h4>
                     </div>
                     <div class="card-body">
@@ -10,9 +11,9 @@
                             <li>{{object.content}}</li>
                         </ul>
 
-                        <p><a class="btn btn-secondary" href="{% url 'blog:post_item' object.pk %}" role="button">Посмотреть &raquo</a></p>
-                        <p><a class="btn btn-warning" href="{% url 'blog:post_update' object.pk %}" role="button">Изменить &raquo;</a></p>
-                        <p><a class="btn btn-danger" href="{% url 'blog:post_delete' object.pk %}" role="button">Удалить &raquo;</a></p>
+                        <p><a class="btn btn-secondary" href="{% url 'blog:post_item' object.slug %}" role="button">Посмотреть &raquo</a></p>
+                        <p><a class="btn btn-warning" href="{% url 'blog:post_update' object.slug %}" role="button">Изменить &raquo;</a></p>
+                        <p><a class="btn btn-danger" href="{% url 'blog:post_delete' object.slug %}" role="button">Удалить &raquo;</a></p>
 
                     </div>
                 </div>

@@ -35,10 +35,10 @@ class PostCreateView(CreateView):
 
 class PostUpdateView(UpdateView):
     model = Post
-    fields = ('name', 'content', 'image', 'published')
+    fields = ('name', 'slug', 'content', 'image', 'published')
 
     def get_success_url(self):
-        return reverse('blog:post_item', kwargs={'pk': self.object.pk})
+        return reverse('blog:post_item', kwargs={'slug': self.object.slug})
 
 
 class PostDeleteView(DeleteView):
@@ -46,13 +46,13 @@ class PostDeleteView(DeleteView):
     success_url = reverse_lazy('blog:post_list')
 
 
-def toggle_publish(pk):
-    post_item = get_object_or_404(Post, pk=pk)
-    if post_item.published:
-        post_item.published = False
-    else:
-        post_item.published = True
-
-    post_item.save()
-
-    return redirect(reverse('blog:blog_item', args=[post_item.pk]))
+# def toggle_publish(pk):
+#     post_item = get_object_or_404(Post, pk=pk)
+#     if post_item.published:
+#         post_item.published = False
+#     else:
+#         post_item.published = True
+#
+#     post_item.save()
+#
+#     return redirect(reverse('blog:blog_item', args=[post_item.pk]))
