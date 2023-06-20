@@ -26,7 +26,8 @@ class ProductListView(generic.ListView):
     model = Product
     extra_context = {'title': 'Список продукции'}
 
-
+    def get_object(self, queryset=None):
+        return self.request.user
 # def products(request):
 #     path = settings.MEDIA_ROOT
 #     img_list = os.listdir(path + '/images')
@@ -45,7 +46,8 @@ class ProductDetailView(generic.DetailView):
         #context_data['description'] = self.get_object()
         context_data['versions'] = Version.objects.filter(name_of_product=self.object, actual_version=True)
         return context_data
-
+    def get_object(self, queryset=None):
+        return self.request.user
 
 # def product(request, pk):
 #     product_item = Product.objects.get(pk=pk)
@@ -59,7 +61,8 @@ class ProductCreateView(generic.CreateView):
     model = Product
     fields = ('name', 'description', 'preview', 'category', 'price', 'date_create', 'date_change')
     success_url = reverse_lazy('main:product_list')
-
+    def get_object(self, queryset=None):
+        return self.request.user
 
 class ProductUpdateView(generic.UpdateView):
     model = Product
@@ -89,12 +92,14 @@ class ProductUpdateView(generic.UpdateView):
 
         return super().form_valid(form)
 
-
+    def get_object(self, queryset=None):
+        return self.request.user
 class ProductDeleteView(generic.DeleteView):
     model = Product
     success_url = reverse_lazy('main:product_list')
 
-
+    def get_object(self, queryset=None):
+        return self.request.user
 class VersionListView(ListView):
     model = Version
 

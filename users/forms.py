@@ -6,7 +6,6 @@ from users.models import User
 
 
 class UserForm(FormStyleMixin, UserChangeForm):
-
     class Meta:
         model = User
         fields = ('email', 'first_name', 'last_name', 'phone', 'avatar')
@@ -21,3 +20,6 @@ class UserRegisterForm(FormStyleMixin, UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2')
+
+
+

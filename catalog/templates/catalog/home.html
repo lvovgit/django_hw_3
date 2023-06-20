@@ -1,5 +1,13 @@
 {% extends 'catalog/base.html' %}
 
+<body>
+
+
 {% block content %}
+    {% if user.is_authenticated %}
     {% include 'catalog/includes/inc_product_card.html' %}
+    {% else %}
+    Вы не авторизованы
+    {% endif %}
 {% endblock %}
+</body>
