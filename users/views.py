@@ -2,14 +2,13 @@ import random
 
 from django.contrib.auth import login
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import PasswordResetView, PasswordContextMixin
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views import View
-from django.views.generic import UpdateView, CreateView, TemplateView, FormView
+from django.views.generic import UpdateView, CreateView, TemplateView
 
 from config import settings
 from users.forms import UserForm, UserRegisterForm
@@ -105,6 +104,8 @@ class EmailConfirmationFailedView(TemplateView):
 
 
 def generate_new_password(request, email=None):
+    if not email:
+        email = request.user.email
     new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
 
     send_mail(
@@ -114,10 +115,10 @@ def generate_new_password(request, email=None):
         recipient_list=[email],
         fail_silently=False
     )
-    print(request.user.email)
-    print(request.user)
-    print(request.user.id)
-    print(request.user.__dict__)
+    # print(request.user.email)
+    # print(request.user)
+    # print(request.user.id)
+    # print(request.user.__dict__)
     user = User.objects.filter(email=email).first()
 
     user.set_password(new_password)
@@ -129,10 +130,11 @@ def generate_new_password(request, email=None):
 
 
 def backup_pass(request):
-    if request.method == "POST":
-        email = request.POST.get('email')
-        generate_new_password(request, email=email)
-    return render(request, 'users/backup_pass.html')
+        if request.method == "POST":
+            email = request.POST.get('email')
+            generate_new_password(request, email=email)
+        return render(request, 'users/backup_pass.html')
+    # return redirect(reverse('users:login'))
 
 # def form_valid(self, form):
 #     if form.is_valid():
