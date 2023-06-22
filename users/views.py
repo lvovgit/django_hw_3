@@ -104,25 +104,34 @@ class EmailConfirmationFailedView(TemplateView):
         return context
 
 
-def generate_new_password(request):
+def generate_new_password(request, email=None):
     new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
 
     send_mail(
         subject='Вы сменили пароль',
         message=f'Ваш новый сгенерированный пароль: {new_password}',
         from_email=settings.EMAIL_HOST_USER,
-        recipient_list=[request.user.email],
+        recipient_list=[email],
         fail_silently=False
     )
-    request.user.set_password(new_password)
-    request.user.save()
+    print(request.user.email)
+    print(request.user)
+    print(request.user.id)
+    print(request.user.__dict__)
+    user = User.objects.filter(email=email).first()
+
+    user.set_password(new_password)
+    user.save()
     return redirect(reverse('users:login'))
+    # request.user.set_password(new_password)
+    # request.user.save()
+    # return redirect(reverse('users:login'))
 
 
 def backup_pass(request):
     if request.method == "POST":
         email = request.POST.get('email')
-        generate_new_password(email)
+        generate_new_password(request, email=email)
     return render(request, 'users/backup_pass.html')
 
 # def form_valid(self, form):
