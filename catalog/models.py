@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 # from catalog.models import Product
 
 
@@ -11,6 +13,14 @@ NULLABLE = {'blank': True, 'null': True}
 #     model = Product
 
 class Product(models.Model):
+    ACTIV = 'Активна'
+    NO_ACTIV = 'Не активна'
+
+    SELECT_STATUS = [
+        (ACTIV, 'Активна'),
+        (NO_ACTIV, 'Не активна'),
+    ]
+
     name = models.CharField(max_length=150, verbose_name='наименование')
     description = models.TextField(verbose_name='описание')
     preview = models.ImageField(upload_to='media', verbose_name='фото', **NULLABLE)
@@ -18,7 +28,9 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='цена')
     date_create = models.DateTimeField(verbose_name='дата создания')
     date_change = models.DateTimeField(verbose_name='дата изменения')
-
+    status = models.CharField(max_length=50, default=NO_ACTIV, choices=SELECT_STATUS, verbose_name='Статус')
+    user = models.CharField(max_length=50, verbose_name='Создатель', **NULLABLE)
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Создатель', **NULLABLE)
     def __str__(self):
         return f'{self.name} {self.description}'
 

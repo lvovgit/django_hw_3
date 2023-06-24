@@ -1,5 +1,7 @@
 import os
 
+from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -10,21 +12,23 @@ from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
 from config import settings
 
-
+# @login_required
+# @permission_required('main:view_product')
 def home(request):
     path = settings.MEDIA_ROOT
     img_list = os.listdir(path + '/images')
-    context = {
+    extra_context = {
         'product_list': Product.objects.all()[:3],
         'title': 'Главная',
-        'images': img_list
+        'images': img_list,
+        'object_list': Product.objects.filter(status='Активна')
     }
-    return render(request, 'catalog/home.html', context)
+    return render(request, 'catalog/home.html', extra_context)
 
 
-class ProductListView(generic.ListView):
+class ProductListView(LoginRequiredMixin, generic.ListView):
     model = Product
-    extra_context = {'title': 'Список продукции'}
+    extra_context = {'title': 'Список продукции', 'object_list': Product.objects.filter(status='Активна')}
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -37,8 +41,9 @@ class ProductListView(generic.ListView):
 #         'images': img_list
 #     }
 #     return render(request, 'catalog/product_list.html', context)
-class ProductDetailView(generic.DetailView):
+class ProductDetailView(LoginRequiredMixin,  generic.DetailView):
     model = Product
+    permission_required = 'catalog.view_product'
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -57,19 +62,21 @@ class ProductDetailView(generic.DetailView):
 #     }
 #     return render(request, 'catalog/product_detail.html', context)
 
-class ProductCreateView(generic.CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, generic.CreateView):
     model = Product
     fields = ('name', 'description', 'preview', 'category', 'price', 'date_create', 'date_change')
     success_url = reverse_lazy('main:product_list')
+    permission_required = 'catalog.add_product'
     def get_object(self, queryset=None):
         return self.request.user
 
-class ProductUpdateView(generic.UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, generic.UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form_with_formset.html'
     #fields = ('name', 'description', 'preview', 'category', 'price', 'date_create', 'date_change')
     success_url = reverse_lazy('main:product_list')
+    permission_required = 'catalog.change_product'
 
     def get_success_url(self, *args, **kwargs):
         return reverse('main:product_update', args=[self.get_object().pk])
@@ -94,16 +101,18 @@ class ProductUpdateView(generic.UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
-class ProductDeleteView(generic.DeleteView):
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Product
     success_url = reverse_lazy('main:product_list')
+    def test_func(self):
+        return self.request.user.is_superuser
 
     def get_object(self, queryset=None):
         return self.request.user
 class VersionListView(ListView):
     model = Version
 
-
+# @login_required
 def info(request):
     context = {
         'title': 'Контакты',
