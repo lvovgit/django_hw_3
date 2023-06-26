@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="col-12">
-    {% if perms.main.add_product %}
+    {% if perms.catalog.add_product %}
     <a href="{% url 'main:product_create' %}" class="btn btn-primary m-2">Создать товар</a>
     {% endif %}
     </div>

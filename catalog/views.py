@@ -3,13 +3,15 @@ import os
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.forms import inlineformset_factory
+from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views import generic
 from django.views.generic import ListView
 
 from catalog.forms import ProductForm, VersionForm
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
+from catalog.services import get_category_subjects
 from config import settings
 
 # @login_required
@@ -51,8 +53,8 @@ class ProductDetailView(LoginRequiredMixin,  generic.DetailView):
         #context_data['description'] = self.get_object()
         context_data['versions'] = Version.objects.filter(name_of_product=self.object, actual_version=True)
         return context_data
-    def get_object(self, queryset=None):
-        return self.request.user
+    # def get_object(self, queryset=None):
+    #     return self.request.user
 
 # def product(request, pk):
 #     product_item = Product.objects.get(pk=pk)
@@ -64,11 +66,16 @@ class ProductDetailView(LoginRequiredMixin,  generic.DetailView):
 
 class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, generic.CreateView):
     model = Product
-    fields = ('name', 'description', 'preview', 'category', 'price', 'date_create', 'date_change')
+    fields = ('name', 'description', 'preview', 'category', 'price', 'date_create', 'date_change', 'status', 'creator')
     success_url = reverse_lazy('main:product_list')
     permission_required = 'catalog.add_product'
-    def get_object(self, queryset=None):
-        return self.request.user
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    # def get_object(self, queryset=None):
+    #     return self.request.user
 
 class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, generic.UpdateView):
     model = Product
@@ -80,6 +87,13 @@ class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, generic.Upd
 
     def get_success_url(self, *args, **kwargs):
         return reverse('main:product_update', args=[self.get_object().pk])
+
+    def get_object(self, queryset=None):  # продукт должен редактировать только владелец
+        self.object = super().get_object(queryset)
+        if self.object.user != self.request.user and not self.request.user.is_staff:
+            raise Http404("Вы не являетесь владельцем этого товара")
+        return self.object
+
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
@@ -99,8 +113,8 @@ class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, generic.Upd
 
         return super().form_valid(form)
 
-    def get_object(self, queryset=None):
-        return self.request.user
+    # def get_object(self, queryset=None):
+    #     return self.request.user
 class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Product
     success_url = reverse_lazy('main:product_list')
@@ -111,6 +125,18 @@ class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteV
         return self.request.user
 class VersionListView(ListView):
     model = Version
+
+class CategoriesListView(ListView):
+    model = Category
+    extra_context = {
+        'title': 'Все категории',
+        'object_list': Category.objects.all()
+    }
+
+    def get_context_data(self, **kwargs):   # меняет title на __str__.object (имя студента)
+        context_data = super().get_context_data(**kwargs)
+        context_data['subject_list'] = get_category_subjects    # логика вынесена в services.py ---------
+        return context_data
 
 # @login_required
 def info(request):

@@ -42,10 +42,11 @@
 {#                    {% if perms.main.change_product %}#}
 {#                    {% if user.email == product.user %}#}
 {#                        {% if object.user == user.email %}#}
-                        {% if perms.catalog.change_product %}
+{#                        {% if perms.catalog.change_product and product.object.creator == object.user.email %}#}
+                    {% if user.email == object.user %}
                     <p><a class="btn btn-warning" href="{% url 'main:product_update' object.pk %}" role="button">Редактировать
                         >></a></p>
-{#                    {% endif %}
+                    {% endif %}
 {#                    {% endif %}#}
                     {% if user.is_superuser %}
                     <p><a class="btn btn-danger" href="{% url 'main:product_delete' object.pk %}" role="button">Удалить>></a></p>
