@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-
+from django_crontab.crontab import Crontab
+import fcntl
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'blog',
     'users',
     'skychimp',
+
 
 ]
 
@@ -144,6 +146,11 @@ EMAIL_USE_SSL = True
 # EMAIL_SERVER = EMAIL_HOST_USER
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # EMAIL_ADMIN = EMAIL_HOST_USER
+CRONJOBS = [
+    ('0 12 * * *', 'main.services.send_email', 'Sending.DAILY'),
+    ('0 12 * * 1', 'main.services.send_email', 'Sending.WEEKLY'),
+    ('0 12 1 * *', 'main.services.send_email', 'Sending.MONTHLY'),
+]
 
 SITE_ID = 1
 AUTH_USER_MODEL = 'users.User'
@@ -161,3 +168,9 @@ CACHES = {
         "LOCATION": os.getenv('CACHE_LOCATION'),
     }
 }
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = '/users/'
+
+CACHE_ENABLED = os.getenv("CACHE_ENABLED") == 'True'

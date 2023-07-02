@@ -25,5 +25,5 @@ urlpatterns = [
     path('', include('catalog.urls', namespace='main')),
     path('', include('blog.urls', namespace='blog')),
     path('users/', include('users.urls', namespace='users')),
-    path('', include('skychimp.urls', namespace='skychimp')),
+    path('skychimp/', include('skychimp.urls', namespace='skychimp')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,18 @@
+{% extends 'catalog/base.html' %} <!-- Выводит базовый html (верхняя, базовая часть сайта) -->
+
+{% block content %}
+    margin: 40px;
+    <div class="card">
+        margin: 40px;
+        <div class="card-header">{{ object.name }}</div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <h6 class="card-title pricing-card-title">{{ object.email }}</h6>
+            </table>
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'skychimp:customer_list' %}" type="button"
+               class="w-100 btn btn-lg btn-outline-primary">назад</a>
+        </div>
+    </div>
+{% endblock %}
