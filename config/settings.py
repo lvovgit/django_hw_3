@@ -12,8 +12,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-from django_crontab.crontab import Crontab
-import fcntl
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -160,17 +160,15 @@ LOGIN_URL = '/users/'
 # rdolafnnazlsgrwe
 
 
-CACHE_ENABLED = os.getenv('CACHE_ENABLED') == '1'
+# CACHE_ENABLED = os.getenv('CACHE_ENABLED') == '1'
+#
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
+#         "LOCATION": os.getenv('CACHE_LOCATION'),
+#     }
+# }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": os.getenv('CACHE_LOCATION'),
-    }
-}
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_URL = '/users/'
 
-CACHE_ENABLED = os.getenv("CACHE_ENABLED") == 'True'
+
