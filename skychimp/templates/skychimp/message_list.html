@@ -1,8 +1,8 @@
-{% extends 'catalog/base.html' %} <!-- Выводит базовый html (верхняя, базовая часть сайта) -->
-{% block content %}  <!-- ШАБЛОННЫЙ ТЕГ for content -->
+{% extends 'catalog/base.html' %}
+{% block content %}
     <main>
         <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
-            <div class="col-12">   <!-- кнопка Создать студента -->
+            <div class="col-12">
                 <a href="{% url 'skychimp:message_create' %}" class="btn btn-primary m-2">Создать сообщение</a>
             </div>
             {% for object in message_list %}
@@ -28,4 +28,4 @@
             {% endfor %}
         </div>
     </main>
-{% endblock %}   <!-- закрытие ШАБЛОННЫЙ ТЕГ for content -->
+{% endblock %}

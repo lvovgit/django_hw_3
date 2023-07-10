@@ -1,10 +1,11 @@
 {% extends 'catalog/base.html' %}
-
+{% load mediapath %}
 {% block content %}
 <div class="col">
 <div class="card">
     <div class="card-body">
         <table class="table">
+             <img src="{% mediapath object.image %}" alt="Картинка" width="200" height="200"/>
             <tr>
                 <td>Наименование</td>
                 <td>{{ object.name }}</td>

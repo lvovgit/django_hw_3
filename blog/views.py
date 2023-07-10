@@ -11,6 +11,10 @@ from blog.models import Post
 
 class PostListView(ListView):
     model = Post
+    extra_context = {
+        'object_list': Post.objects.all(),
+        'title': 'Все статьи'
+    }
 
     def get_queryset(self):
         queryset = super().get_queryset()

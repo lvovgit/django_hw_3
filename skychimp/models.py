@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import date, datetime
 NULLABLE = {'null': True, 'blank': True}
 
 
@@ -39,9 +39,7 @@ class Sending(models.Model):
     MONTHLY = '1 раз в месяц'
 
     FREQUENCY_CHOICES = [
-        ('1 раз в день', '1 раз в день'),
-        ('1 раз в неделю', '1 раз в неделю'),
-        ('1 раз в месяц', '1 раз в месяц'),
+
         (ONCE, 'Один раз'),
         (DAILY, '1 раз в день'),
         (WEEKLY, '1 раз в неделю'),
@@ -58,8 +56,10 @@ class Sending(models.Model):
     ]
 
     message = models.ForeignKey(Message, on_delete=models.CASCADE, verbose_name='Сообщение')
-    created_at = models.DateTimeField(auto_now_add=True)
-    scheduled_time = models.TimeField(auto_now_add=True, verbose_name='Время рассылки')
+    # created_at = models.DateTimeField(auto_now_add=True)
+    scheduled_time = models.TimeField(default=datetime.now, verbose_name='Время рассылки')
+    start_date = models.DateField(default=date.today, verbose_name='Дата начала')
+    end_date = models.DateField(default=date.today, verbose_name='Дата окончания')
     frequency = models.CharField(max_length=14, choices=FREQUENCY_CHOICES, verbose_name='Периодичность')
     status = models.CharField(max_length=50, default='Создана', choices=SELECT_STATUS, verbose_name='Статус')
     created = models.ForeignKey('users.User', on_delete=models.CASCADE, verbose_name='Кем создано',
@@ -71,10 +71,9 @@ class Sending(models.Model):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
-
-    permissions = [
-        ('set_send_status', 'Can set sending status'),
-    ]
+        permissions = [
+            ('set_send_status', 'Can set sending status'),
+                ]
 
 
 class Attempt(models.Model):

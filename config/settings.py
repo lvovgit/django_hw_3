@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    # "django.middleware.cache.UpdateCacheMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,6 +57,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # "django.middleware.cache.FetchFromCacheMiddleware",
+
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -84,8 +87,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'project',
-        'USER': 'postgres',
+        'NAME': os.getenv("NAME_POSTGRES"),
+        'USER': os.getenv('USER_POSTGRES'),
     }
 }
 
@@ -147,9 +150,9 @@ EMAIL_USE_SSL = True
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # EMAIL_ADMIN = EMAIL_HOST_USER
 CRONJOBS = [
-    ('0 12 * * *', 'main.services.send_email', 'Sending.DAILY'),
-    ('0 12 * * 1', 'main.services.send_email', 'Sending.WEEKLY'),
-    ('0 12 1 * *', 'main.services.send_email', 'Sending.MONTHLY'),
+    ('0 12 * * *', 'main.services.send_email', ['1 раз в день']),
+    ('0 12 * * 1', 'main.services.send_email', ['1 раз в неделю']),
+    ('0 12 1 * *', 'main.services.send_email', ['1 раз в месяц']),
 ]
 
 SITE_ID = 1
@@ -160,14 +163,14 @@ LOGIN_URL = '/users/'
 # rdolafnnazlsgrwe
 
 
-# CACHE_ENABLED = os.getenv('CACHE_ENABLED') == '1'
-#
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-#         "LOCATION": os.getenv('CACHE_LOCATION'),
-#     }
-# }
+CACHE_ENABLED = os.getenv('CACHE_ENABLED') == '1'
+
+CACHES = {
+     "default": {
+         "BACKEND": "django.core.cache.backends.redis.RedisCache",
+         "LOCATION": os.getenv('CACHE_LOCATION'),
+     }
+}
 
 
 

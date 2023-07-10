@@ -1,4 +1,4 @@
-{% extends 'catalog/base.html' %} <!-- Выводит базовый html (верхняя, базовая часть сайта) -->
+{% extends 'catalog/base.html' %}
 {% load mediapath %}
 {% block content %}
     <div class="col">
@@ -6,8 +6,8 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
-                    Уверены что хотите удалить запись "{{ object }}"?<br> <br> <!-- <br> отступ -->
-                    <input type="submit" class="btn btn-outline-danger" value="Уверен">   <!-- ШАБЛОННЫЙ ТЕГ Условия -->
+                    Уверены что хотите удалить запись "{{ object }}"?<br> <br>
+                    <input type="submit" class="btn btn-outline-danger" value="Уверен">
                 </form>
             </div>
             <div class="card-footer">
@@ -15,4 +15,4 @@
             </div>
         </div>
     </div>
-{% endblock %}   <!-- закрытие ШАБЛОННЫЙ ТЕГ for content -->ent -->
+{% endblock %}
